@@ -1,0 +1,41 @@
+model:
+  name_or_path: "../models/google/gemma-3-270m-it"
+  torch_dtype: "bfloat16"   # bf16 必需：fp16 在此模型上 loss=0/grad_norm=NaN
+
+lora:
+  rank: 8
+  alpha: 16
+  dropout: 0.1
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+  bias: "none"
+
+training:
+  train_data: "../logo-detailed-prompt/train.jsonl"
+  valid_data: "../logo-detailed-prompt/valid.jsonl"
+  output_dir: "../adapter"
+  batch_size: 1
+  gradient_accumulation_steps: 8   # 等效 batch size = 8
+  learning_rate: 1.5e-4
+  num_train_epochs: 3
+  max_length: 2048                 # 超长 SVG 跳过，绝不截断
+  logging_steps: 5
+  eval_steps: 25
+  save_steps: 25
+  early_stopping_patience: 3
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  gradient_checkpointing: true
+  bf16: true
+
+generation:
+  max_new_tokens: 1024   # 多数目标 SVG 超 512 tokens，512 必然不完整
+  temperature: 0.3       # 低温偏好已学到的 SVG 语法，但保留少量多样性
+  top_p: 0.92
+  repetition_penalty: 1.15
+  do_sample: true
+  # NOTE: 不使用 no_repeat_ngram_size —— SVG 合法地大量重复（许多 <circle>），
+  # 禁重复只会逼出损坏属性。
