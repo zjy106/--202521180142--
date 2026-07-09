@@ -21,7 +21,7 @@ training:
   gradient_accumulation_steps: 8   # 等效 batch size = 8
   learning_rate: 1.5e-4
   num_train_epochs: 3
-  max_length: 2048                 # 超长 SVG 跳过，绝不截断
+  max_length: 1536                 # 超长 SVG 跳过，绝不截断（保留 89% 样本）
   logging_steps: 5
   eval_steps: 25
   save_steps: 25
@@ -33,9 +33,9 @@ training:
 
 generation:
   max_new_tokens: 1024   # 多数目标 SVG 超 512 tokens，512 必然不完整
-  temperature: 0.3       # 低温偏好已学到的 SVG 语法，但保留少量多样性
-  top_p: 0.92
-  repetition_penalty: 1.15
+  temperature: 0.2       # 低温：smoke test 证实 temp=0.3 触发 "L 18 L 18..." 重复死循环
+  top_p: 0.9
+  repetition_penalty: 1.05   # 低 penalty：SVG 合法大量重复，高 penalty 逼出垃圾 token
   do_sample: true
   # NOTE: 不使用 no_repeat_ngram_size —— SVG 合法地大量重复（许多 <circle>），
   # 禁重复只会逼出损坏属性。

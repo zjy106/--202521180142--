@@ -165,7 +165,7 @@ def main():
     parser.add_argument("--learning_rate", type=float, default=1.5e-4)
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--num_train_epochs", type=int, default=3)
-    parser.add_argument("--max_length", type=int, default=2048)
+    parser.add_argument("--max_length", type=int, default=1024)
     parser.add_argument("--logging_steps", type=int, default=5)
     parser.add_argument("--eval_steps", type=int, default=25)
     parser.add_argument("--save_steps", type=int, default=25)

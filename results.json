@@ -1,0 +1,1124 @@
+{
+  "baseline": [
+    {
+      "prompt": "A soft rounded-square badge in warm cream sits behind everything as the base shape, giving a friendly frame like a piece of paper; a thick wobbly crayon-style circle outline in coral traces just insid...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "A soft circular badge in pale gray-blue (#E8ECEF) sits centered as the base, giving the mark a stable, coin-like foundation; behind the main figures, a simplified rising sun with three clean rays fans...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a rounded amber bottle silhouette with a narrow neck and gentle shoulders, filled solid with deep forest green to root the mark in craft brewing tradition; inside the bottle, layer a concentric...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a rounded circular badge in deep charcoal (#2D2A26) as a solid backing plate to give the mark weight and contrast against the cream background; inside it, draw a simplified smoothie cup shape i...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Centered on a clean white background, a large soft-edged circle in warm orange forms the base like a cross-section of citrus fruit; inside it, thin curved white lines radiate from the center like oran...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a soft circular backdrop in pale sky blue (#8ECAE6) representing calm and openness; within it place a simplified human head-in-profile silhouette facing right, rendered in deep slate blue (#2A4...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Centered on a soft cream background, a large single hexagon outlined in deep amber forms the backbone of the mark, evoking a honeycomb cell; behind it, faint smaller hexagons tile outward at low opaci...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a soft circular badge in dark charcoal (#2B2B2B) as a subtle backdrop disc for contrast; on top, draw a simplified white chef's toque (puffy rounded top with a fitted band) filling the upper tw...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "A dark forest-green hexagon badge with a slightly rounded outline sits centered as the base emblem shape, edged with a thin golden border for a rustic stamped look; inside, a lighter green concentric ...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Centered on a dark charcoal-brown circular badge background, a weathered stone archway forms the outer frame suggesting ancient ruins; inside the arch, a classical fluted column stands vertically at t...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a thin perfect circle outline in soft cream as a quiet backdrop halo, giving the mark a boutique, contained feel; inside it, place a sleek abstract silhouette combining an open pair of scissors...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a soft rounded circle badge in pale sky blue as the background shape, giving the logo a friendly coin-like frame. Behind the top of the circle, place a simple bright yellow sun with a few short...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a soft rounded circle in warm off-white (#FFF8F0) as the base plate background, giving the mark a friendly badge shape; behind it place a subtle teal (#2EC4B6) drop shadow offset slightly down-...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a large soft-edged circle in deep navy as the background badge, giving weight and a tailoring-guild feel; inside it, place a slender golden needle angled diagonally from lower-left to upper-rig...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "A soft circular backdrop in pale off-white fills the canvas edge to edge, giving the mark room to breathe; centered within it, a gently curved vertical spine made of 6-7 rounded vertebra segments stac...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a dark navy circular backdrop that gives the mark depth and contrast against the background; inset within it, place a bold octagonal shield outline rendered in a bright violet-to-cyan gradient,...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "A soft circular badge sits at the back as a pale sage-green disc, grounding the mark with a sense of wholeness and the earth. Behind the upper half of the circle, a simplified radiant sun made of thre...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    }
+  ],
+  "fine_tuned": [
+    {
+      "prompt": "A soft rounded-square badge in warm cream sits behind everything as the base shape, giving a friendly frame like a piece of paper; a thick wobbly crayon-style circle outline in coral traces just insid...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8012,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.21428571428571427,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.429
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 36,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "A soft circular badge in pale gray-blue (#E8ECEF) sits centered as the base, giving the mark a stable, coin-like foundation; behind the main figures, a simplified rising sun with three clean rays fans...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#E8ECEF\"/><path d=\"M18 128 C18 128 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/><path d=\"M18 128 C18 128 18 18 18 128 C18 128 18 18 18 128\" fill=\"#E8ECEF\" stroke=\"#00FF00\" stroke-width=\"2\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.9858,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 0.98,
+          "palette": 1.0,
+          "density": 1.0,
+          "non_degenerate": 1.0,
+          "fidelity": 0.3571428571428571,
+          "fidelity_detail": {
+            "color_hit": 0.143,
+            "shape_hit": 0.571
+          }
+        },
+        "details": {
+          "color_count": 2,
+          "element_count": 14,
+          "coord_range": "[18.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a rounded amber bottle silhouette with a narrow neck and gentle shoulders, filled solid with deep forest green to root the mark in craft brewing tradition; inside the bottle, layer a concentric...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb7c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb7c\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.2,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.4
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 2,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a rounded circular badge in deep charcoal (#2D2A26) as a solid backing plate to give the mark weight and contrast against the cream background; inside it, draw a simplified smoothie cup shape i...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#2D2A26\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#2D2A26\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8159,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.3833333333333333,
+          "fidelity_detail": {
+            "color_hit": 0.1,
+            "shape_hit": 0.667
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 2,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Centered on a clean white background, a large soft-edged circle in warm orange forms the base like a cross-section of citrus fruit; inside it, thin curved white lines radiate from the center like oran...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4E2\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4E2\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.2,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.4
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 2,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a soft circular backdrop in pale sky blue (#8ECAE6) representing calm and openness; within it place a simplified human head-in-profile silhouette facing right, rendered in deep slate blue (#2A4...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD3C3\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD3C3\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8043,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.25,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.5
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 2,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Centered on a soft cream background, a large single hexagon outlined in deep amber forms the backbone of the mark, evoking a honeycomb cell; behind it, faint smaller hexagons tile outward at low opaci...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8043,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.25,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.5
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 3,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a soft circular badge in dark charcoal (#2B2B2B) as a subtle backdrop disc for contrast; on top, draw a simplified white chef's toque (puffy rounded top with a fitted band) filling the upper tw...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFC3E9\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFC3E9\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFC3E9\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8043,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.25,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.5
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 3,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "A dark forest-green hexagon badge with a slightly rounded outline sits centered as the base emblem shape, edged with a thin golden border for a rustic stamped look; inside, a lighter green concentric ...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.619,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 0.5,
+          "coord_centered": 0.5,
+          "palette": 0.0,
+          "density": 0.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "empty",
+          "fidelity": 0.0,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.0
+          }
+        },
+        "details": {
+          "color_count": 0,
+          "element_count": 0,
+          "coord_range": "N/A",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Centered on a dark charcoal-brown circular badge background, a weathered stone archway forms the outer frame suggesting ancient ruins; inside the arch, a classical fluted column stands vertically at t...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9c9\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9c9\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.2,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.4
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 2,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a thin perfect circle outline in soft cream as a quiet backdrop halo, giving the mark a boutique, contained feel; inside it, place a sleek abstract silhouette combining an open pair of scissors...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><path d=\"M108 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128\" fill=\"#fcc9e4\" stroke=\"#000\" width=\"12\" opacity=\"0.78\"></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.9457,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 1.0,
+          "density": 1.0,
+          "non_degenerate": 1.0,
+          "fidelity": 0.375,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.75
+          }
+        },
+        "details": {
+          "color_count": 2,
+          "element_count": 3,
+          "coord_range": "[108.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a soft rounded circle badge in pale sky blue as the background shape, giving the logo a friendly coin-like frame. Behind the top of the circle, place a simple bright yellow sun with a few short...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4F7\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4F7\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4F7\"/><path d=\"M128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128 L128 128\n\n<g><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4F7\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4F7\"/></svg>",
+      "reward": {
+        "valid": false,
+        "total": 0.0,
+        "reason": "SVG parse failed",
+        "breakdown": {}
+      }
+    },
+    {
+      "prompt": "Center a soft rounded circle in warm off-white (#FFF8F0) as the base plate background, giving the mark a friendly badge shape; behind it place a subtle teal (#2EC4B6) drop shadow offset slightly down-...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#f7c9a2\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.7826,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 0.5,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.5,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 1.0
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 1,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a large soft-edged circle in deep navy as the background badge, giving weight and a tailoring-guild feel; inside it, place a slender golden needle angled diagonally from lower-left to upper-rig...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4F4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#FFD4F4\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.2,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.4
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 2,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "A soft circular backdrop in pale off-white fills the canvas edge to edge, giving the mark room to breathe; centered within it, a gently curved vertical spine made of 6-7 rounded vertebra segments stac...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.2,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.4
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 2,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "Center a dark navy circular backdrop that gives the mark depth and contrast against the background; inset within it, place a bold octagonal shield outline rendered in a bright violet-to-cyan gradient,...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fccb9c\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8043,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.25,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.5
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 36,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    },
+    {
+      "prompt": "A soft circular badge sits at the back as a pale sage-green disc, grounding the mark with a sense of wholeness and the earth. Behind the upper half of the circle, a simplified radiant sun made of thre...",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\"><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/><circle cx=\"128\" cy=\"128\" r=\"128\" fill=\"#fcc9e4\"/></svg>",
+      "reward": {
+        "valid": true,
+        "total": 0.8043,
+        "breakdown": {
+          "well_formed": 1.0,
+          "attrs": 1.0,
+          "viewbox": 1.0,
+          "no_forbidden_tags": 1.0,
+          "no_external_refs": 1.0,
+          "coord_in_bounds": 1.0,
+          "coord_centered": 1.0,
+          "palette": 0.5,
+          "density": 1.0,
+          "non_degenerate": 0.0,
+          "degenerate_reason": "monochrome",
+          "fidelity": 0.25,
+          "fidelity_detail": {
+            "color_hit": 0.0,
+            "shape_hit": 0.5
+          }
+        },
+        "details": {
+          "color_count": 1,
+          "element_count": 2,
+          "coord_range": "[128.0, 128.0]",
+          "forbidden_tags": [],
+          "external_refs": []
+        }
+      }
+    }
+  ],
+  "summary": {
+    "num_samples": 17,
+    "baseline": {
+      "avg_reward": 0.6189999999999999,
+      "min_reward": 0.619,
+      "max_reward": 0.619,
+      "valid_count": 17,
+      "valid_ratio": 1.0
+    },
+    "fine_tuned": {
+      "avg_reward": 0.7630411764705882,
+      "min_reward": 0.0,
+      "max_reward": 0.9858,
+      "valid_count": 16,
+      "valid_ratio": 0.9411764705882353
+    },
+    "delta": {
+      "avg_reward": 0.14404117647058834,
+      "valid_count": -1
+    }
+  }
+}

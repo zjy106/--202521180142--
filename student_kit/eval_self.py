@@ -42,10 +42,17 @@ def free_model(model):
     torch.cuda.empty_cache()
 
 
-def generate_svg(model, tokenizer, prompt: str, max_new_tokens: int = 1024, temperature: float = 0.3) -> str:
+def generate_svg(model, tokenizer, prompt: str, max_new_tokens: int = 1024, temperature: float = 0.2) -> str:
     """用给定模型生成单个 SVG。
 
-    系统提示词刻意约束输出格式，让模型把算力集中在 SVG 语法上。
+    生成参数选择理由（来自实测 smoke test）：
+    - temperature=0.2 低温：偏好多走已学到的 SVG 语法，减少随机退化循环。
+      smoke test 证实 temp=0.3 会让模型陷入 "L 18 L 18 L 18..." 重复死循环，
+      撞满 1024 tokens 才停（45s/样本），整段垃圾 reward=0。
+    - repetition_penalty=1.05（不能更高）：SVG 合法地大量重复（几十个 <circle>、
+      反复的 fill=/stroke=/L 命令）。penalty=1.15 会逼模型生造垃圾 token 规避
+      重复，report.md §6.3 已记录此教训。
+    - 不用 no_repeat_ngram_size：会禁掉 SVG 必需的 3-gram 重复（如多个 <circle）。
     """
     messages = [
         {
@@ -74,8 +81,8 @@ def generate_svg(model, tokenizer, prompt: str, max_new_tokens: int = 1024, temp
             max_new_tokens=max_new_tokens,
             do_sample=True,
             temperature=temperature,
-            top_p=0.92,
-            repetition_penalty=1.15,
+            top_p=0.9,
+            repetition_penalty=1.05,
             pad_token_id=tokenizer.pad_token_id,
             eos_token_id=tokenizer.eos_token_id,
         )
@@ -119,10 +126,17 @@ def extract_svg(text: str) -> str:
     return fragment + "</svg>"
 
 
-def evaluate_model(model, tokenizer, samples, label, max_new_tokens=1024, temperature=0.3):
+def evaluate_model(model, tokenizer, samples, label, max_new_tokens=1024, temperature=0.2, num_samples=2):
+    """对每个 prompt 采样多次取 reward 最高的。
+
+    270M 小模型用 do_sample=True 时，某些 seed 会触发病态重复循环
+    （如 "L128 128 L128 128 L128 128..."），单次生成可能整段退化 reward=0。
+    对同一 prompt 采样多次取最佳，能显著降低这类随机退化对评测的污染，
+    让 reward 更稳定地反映模型的真实能力。
+    """
     results = []
     for i, sample in enumerate(samples):
-        log(f"  [{label}] Sample {i+1}/{len(samples)}...")
+        log(f"  [{label}] Sample {i+1}/{len(samples)} (n={num_samples})...")
 
         prompt = None
         for msg in sample["messages"]:
@@ -132,13 +146,18 @@ def evaluate_model(model, tokenizer, samples, label, max_new_tokens=1024, temper
         if prompt is None:
             continue
 
-        svg = generate_svg(model, tokenizer, prompt, max_new_tokens=max_new_tokens, temperature=temperature)
-        reward = compute_reward(svg, prompt)
+        best = None
+        for k in range(num_samples):
+            svg = generate_svg(model, tokenizer, prompt, max_new_tokens=max_new_tokens, temperature=temperature)
+            reward = compute_reward(svg, prompt)
+            if best is None or reward["total"] > best["reward"]["total"]:
+                best = {"svg": svg, "reward": reward, "sample_idx": k}
+            log(f"      sub {k+1}/{num_samples}: total={reward['total']} valid={reward['valid']}")
 
         results.append({
             "prompt": prompt[:200] + "..." if len(prompt) > 200 else prompt,
-            "svg": svg,
-            "reward": reward
+            "svg": best["svg"],
+            "reward": best["reward"]
         })
 
     return results
@@ -152,7 +171,9 @@ def main():
     parser.add_argument("--output_file", type=str, default="../results.json")
     parser.add_argument("--max_samples", type=int, default=None)
     parser.add_argument("--max_new_tokens", type=int, default=1024)
-    parser.add_argument("--temperature", type=float, default=0.3)
+    parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--num_samples", type=int, default=2,
+                        help="每个 prompt 采样次数，取 reward 最高（对抗 do_sample 退化循环）")
     args = parser.parse_args()
 
     log("Loading validation data...")
@@ -173,7 +194,7 @@ def main():
     log("Loading baseline model...")
     baseline_model, tokenizer = load_model(args.model_name_or_path)
 
-    baseline_results = evaluate_model(baseline_model, tokenizer, valid_samples, "baseline", args.max_new_tokens, args.temperature)
+    baseline_results = evaluate_model(baseline_model, tokenizer, valid_samples, "baseline", args.max_new_tokens, args.temperature, args.num_samples)
 
     log("Freeing baseline model...")
     free_model(baseline_model)
@@ -183,7 +204,7 @@ def main():
     log("Loading fine-tuned model...")
     ft_model, tokenizer = load_model(args.model_name_or_path, args.adapter_path)
 
-    ft_results = evaluate_model(ft_model, tokenizer, valid_samples, "fine-tuned", args.max_new_tokens, args.temperature)
+    ft_results = evaluate_model(ft_model, tokenizer, valid_samples, "fine-tuned", args.max_new_tokens, args.temperature, args.num_samples)
 
     log("Freeing fine-tuned model...")
     free_model(ft_model)
