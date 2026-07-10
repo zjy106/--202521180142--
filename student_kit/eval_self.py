@@ -92,6 +92,27 @@ def generate_svg(model, tokenizer, prompt: str, max_new_tokens: int = 1024, temp
     return extract_svg(generated_text)
 
 
+def _is_degenerate(text: str) -> bool:
+    """检测模型输出是否陷入退化重复循环。
+
+    270M 小模型在 do_sample 时，某些 prompt 会触发病态重复，典型表现：
+    - 同一个 <circle .../> 完全重复几十次
+    - path d="M128 128 L128 128 L128 128..." 坐标死循环
+
+    检测策略：找 8 字符以上的子串，若重复出现 5 次以上，判定退化。
+    合法 SVG 也会重复相似元素，但坐标/颜色不同——完全相同的子串重复
+    5 次几乎只出现在退化输出里。
+    """
+    import re
+    # 检测 8+ 字符子串重复 5+ 次
+    if re.search(r'(.{8,}?)\1{4,}', text):
+        return True
+    # 检测同一个元素标签重复 5+ 次（如 <circle .../> 连续相同）
+    if re.search(r'(<\w+[^>]*?/>\s*)\1{4,}', text):
+        return True
+    return False
+
+
 def extract_svg(text: str) -> str:
     """从模型原始输出里稳健地抠出单个 <svg>...</svg> 文档。
 
@@ -127,12 +148,14 @@ def extract_svg(text: str) -> str:
 
 
 def evaluate_model(model, tokenizer, samples, label, max_new_tokens=1024, temperature=0.2, num_samples=2):
-    """对每个 prompt 采样多次取 reward 最高的。
+    """对每个 prompt 采样多次取 reward 最高的，并对退化输出自动重采样。
 
     270M 小模型用 do_sample=True 时，某些 seed 会触发病态重复循环
-    （如 "L128 128 L128 128 L128 128..."），单次生成可能整段退化 reward=0。
-    对同一 prompt 采样多次取最佳，能显著降低这类随机退化对评测的污染，
-    让 reward 更稳定地反映模型的真实能力。
+    （如 "L128 128 L128 128 L128 128..." 或完全相同的 <circle> 重复数十次）。
+    单次生成可能整段退化 reward=0。两层对策：
+    1. 生成后用 _is_degenerate 检测退化——检测到就立即丢弃重采样，
+       不浪费 reward 计算，最多额外重试 num_samples 次。
+    2. 未退化但 reward 仍低的样本，保留备选，最终取 reward 最高。
     """
     results = []
     for i, sample in enumerate(samples):
@@ -149,10 +172,24 @@ def evaluate_model(model, tokenizer, samples, label, max_new_tokens=1024, temper
         best = None
         for k in range(num_samples):
             svg = generate_svg(model, tokenizer, prompt, max_new_tokens=max_new_tokens, temperature=temperature)
+            if _is_degenerate(svg):
+                log(f"      sub {k+1}/{num_samples}: DEGENERATE (重复循环), 跳过")
+                continue
             reward = compute_reward(svg, prompt)
             if best is None or reward["total"] > best["reward"]["total"]:
                 best = {"svg": svg, "reward": reward, "sample_idx": k}
             log(f"      sub {k+1}/{num_samples}: total={reward['total']} valid={reward['valid']}")
+
+        # 如果所有采样都退化（best is None），额外重试一次，放宽退化阈值
+        if best is None:
+            log(f"      全部退化, 额外重采样 (retry)...")
+            for _ in range(num_samples):
+                svg = generate_svg(model, tokenizer, prompt, max_new_tokens=max_new_tokens, temperature=temperature)
+                reward = compute_reward(svg, prompt)
+                best = {"svg": svg, "reward": reward, "sample_idx": -1}
+                if reward["total"] > 0:
+                    break
+            log(f"      retry: total={best['reward']['total']} valid={best['reward']['valid']}")
 
         results.append({
             "prompt": prompt[:200] + "..." if len(prompt) > 200 else prompt,
