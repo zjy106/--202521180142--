@@ -115,4 +115,4 @@ conda run -n lora_env python student_kit/eval_self.py `
 
 - 学号：202521180142
 - 姓名：仲瑾毓
-- 邮箱：709996150
+- 邮箱：709996150@qq.com
