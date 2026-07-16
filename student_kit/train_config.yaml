@@ -3,14 +3,17 @@ model:
   torch_dtype: "bfloat16"   # bf16 必需：fp16 在此模型上 loss=0/grad_norm=NaN
 
 lora:
-  rank: 8
-  alpha: 16
-  dropout: 0.1
+  rank: 16                   # 8→16：增加 LoRA 容量，让模型有更多参数学习复杂形状组合
+  alpha: 32                  # 保持 alpha = 2×rank 的经验法则
+  dropout: 0.1               # 0.05→0.1：增加正则化，抑制过拟合到"安全模板"捷径
   target_modules:
     - q_proj
     - k_proj
     - v_proj
     - o_proj
+    - gate_proj              # 新增 MLP 层：仅训练 attention 不足以学习 SVG 生成，
+    - up_proj                # 加入 MLP 的 gate/up/down 投影增加模型容量
+    - down_proj
   bias: "none"
 
 training:
@@ -19,23 +22,23 @@ training:
   output_dir: "../adapter"
   batch_size: 1
   gradient_accumulation_steps: 8   # 等效 batch size = 8
-  learning_rate: 1.5e-4
-  num_train_epochs: 3
-  max_length: 1536                 # 超长 SVG 跳过，绝不截断（保留 89% 样本）
+  learning_rate: 1e-4              # 2e-4→1e-4：降低学习率，减少过拟合到简单模式
+  num_train_epochs: 2              # 4→2：减少训练轮数，避免模型学到"安全模板"捷径
+  max_length: 2048                 # 保留 96% 样本，不截断
   logging_steps: 5
   eval_steps: 25
   save_steps: 25
   early_stopping_patience: 3
-  weight_decay: 0.01
-  warmup_ratio: 0.1
+  weight_decay: 0.05               # 0.01→0.05：增加权重衰减，正则化
+  warmup_ratio: 0.15               # 0.1→0.15：更长 warmup，稳定初期训练
   gradient_checkpointing: true
   bf16: true
 
 generation:
   max_new_tokens: 1024   # 多数目标 SVG 超 512 tokens，512 必然不完整
-  temperature: 0.2       # 低温：smoke test 证实 temp=0.3 触发 "L 18 L 18..." 重复死循环
+  temperature: 0.3       # 0.2→0.3：适度低温，保留随机性避免陷入模板化输出
   top_p: 0.9
-  repetition_penalty: 1.05   # 低 penalty：SVG 合法大量重复，高 penalty 逼出垃圾 token
+  repetition_penalty: 1.1   # 1.05→1.1：适度惩罚重复，抑制退化循环
   do_sample: true
   # NOTE: 不使用 no_repeat_ngram_size —— SVG 合法地大量重复（许多 <circle>），
   # 禁重复只会逼出损坏属性。

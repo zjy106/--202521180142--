@@ -71,6 +71,33 @@ def flatten_svg(svg_text: str) -> str:
         return grad_map.get(gid, _FALLBACK_PALETTE[abs(hash(gid)) % len(_FALLBACK_PALETTE)])
 
     out = re.sub(r'url\(#([^)]+)\)', _swap_url, out)
+
+    # Clamp 超界坐标到 [0, 256]，防止模型从训练数据学到 x=-9999 等极端坐标
+    # 并滥用（如输出 x=-9999 width=128 的无效 rect）。
+    def _clamp_coord(m):
+        attr = m.group(1)  # x / y / cx / cy / x1 / y1 / x2 / y2
+        val = float(m.group(2))
+        if val < 0:
+            val = 0.0
+        elif val > 256:
+            val = 256.0
+        return f'{attr}="{val}"'
+
+    # 匹配坐标属性：x="...", y="...", cx="...", cy="...", x1/y1/x2/y2="..."
+    out = re.sub(r'\b([xcy][12]?|cy)="(-?\d+(?:\.\d+)?)"', _clamp_coord, out)
+
+    # Clamp width/height 到 [1, 256]，防止超大 rect 覆盖整个画布的"背景技巧"
+    def _clamp_size(m):
+        attr = m.group(1)  # width / height
+        val = float(m.group(2))
+        if val < 1:
+            val = 1.0
+        elif val > 256:
+            val = 256.0
+        return f'{attr}="{val}"'
+
+    out = re.sub(r'\b(width|height)="(-?\d+(?:\.\d+)?)"', _clamp_size, out)
+
     return out
 
 
@@ -157,15 +184,15 @@ def main():
     parser.add_argument("--valid_data", type=str, default="../logo-detailed-prompt/valid.jsonl")
     parser.add_argument("--model_name_or_path", type=str, default="../models/google/gemma-3-270m-it")
     parser.add_argument("--output_dir", type=str, default="../adapter")
-    parser.add_argument("--lora_rank", type=int, default=8)
-    parser.add_argument("--lora_alpha", type=int, default=16)
+    parser.add_argument("--lora_rank", type=int, default=16)
+    parser.add_argument("--lora_alpha", type=int, default=32)
     parser.add_argument("--lora_dropout", type=float, default=0.1)
-    parser.add_argument("--target_modules", type=str, default="q_proj,k_proj,v_proj,o_proj",
+    parser.add_argument("--target_modules", type=str, default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj",
                         help="Comma-separated LoRA target modules")
-    parser.add_argument("--learning_rate", type=float, default=1.5e-4)
+    parser.add_argument("--learning_rate", type=float, default=1e-4)
     parser.add_argument("--batch_size", type=int, default=1)
-    parser.add_argument("--num_train_epochs", type=int, default=3)
-    parser.add_argument("--max_length", type=int, default=1024)
+    parser.add_argument("--num_train_epochs", type=int, default=2)
+    parser.add_argument("--max_length", type=int, default=2048)
     parser.add_argument("--logging_steps", type=int, default=5)
     parser.add_argument("--eval_steps", type=int, default=25)
     parser.add_argument("--save_steps", type=int, default=25)
@@ -271,8 +298,8 @@ def main():
         bf16=True,
         gradient_checkpointing=True,
         report_to="none",
-        weight_decay=0.01,
-        warmup_ratio=0.1,
+        weight_decay=0.05,
+        warmup_ratio=0.15,
         logging_dir=os.path.join(args.output_dir, "logs"),
     )
 

@@ -50,3 +50,9 @@ desktop.ini
 # ===== Local-only docs / scratch files (not part of task.md submission) =====
 conclusion.md
 _analyze_v3b.py
+
+# ===== Backups (local only, not for submission) =====
+adapter_v1_backup/
+adapter_v2_backup/
+results_v1_backup.json
+results_v2_backup.json

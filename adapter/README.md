@@ -1,9 +1,9 @@
 ---
-base_model: ./models/google/gemma-3-270m-it
+base_model: ../models/google/gemma-3-270m-it
 library_name: peft
 pipeline_tag: text-generation
 tags:
-- base_model:adapter:./models/google/gemma-3-270m-it
+- base_model:adapter:../models/google/gemma-3-270m-it
 - lora
 - transformers
 ---

@@ -29,11 +29,11 @@ class LogoGrader:
     SOFT_MIN = 20
     SOFT_MAX = 236
 
-    # 配色数量上下限（比常见设定更宽松，鼓励多样性）
-    PALETTE_MIN = 2
+    # 配色数量上下限（上调到 3：单色输出不应拿满分，鼓励真实配色）
+    PALETTE_MIN = 3
     PALETTE_MAX = 12
-    # 元素数量上下限（上限收紧，避免噪声刷分）
-    SHAPE_MIN = 2
+    # 元素数量上下限（上调到 3：2 个重复圆不应拿满分，鼓励真实构图）
+    SHAPE_MIN = 3
     SHAPE_MAX = 80
 
     HEX_COLOR_RE = re.compile(r'^#([0-9a-fA-F]{3}){1,2}$')
@@ -309,17 +309,60 @@ class LogoGrader:
             return True, "monochrome"
         return False, None
 
+    @staticmethod
+    def _is_template_like(root):
+        """检测模板化输出（如「单色居中重复圆」安全模板）。
+
+        Goodhart 效应的典型表现：模型学到重复画同一个居中填满圆来踩分。
+        判定标准：
+        - 所有 circle 的 cx/cy/r 完全相同（坐标无变化）
+        - 且 circle 数量 >= 2（有重复）
+        - 或所有形状的属性组合去重后只剩 1 种（完全相同的元素重复）
+
+        返回 (is_template, reason)
+        """
+        circles = []
+        all_shape_sigs = []
+        for elem in root.iter():
+            tag = elem.tag.split('}')[-1] if '}' in elem.tag else elem.tag
+            if tag == "circle":
+                cx = elem.attrib.get("cx", "")
+                cy = elem.attrib.get("cy", "")
+                r = elem.attrib.get("r", "")
+                circles.append((cx, cy, r))
+            if tag in {"path", "circle", "ellipse", "rect", "polygon", "polyline", "line"}:
+                # 收集形状的签名（标签 + 属性），用于检测完全相同的元素重复
+                sig = (tag, frozenset(sorted(elem.attrib.items())))
+                all_shape_sigs.append(sig)
+
+        # 检测 1：多个完全相同的 circle（同 cx/cy/r）
+        if len(circles) >= 2:
+            unique_circles = set(circles)
+            if len(unique_circles) == 1:
+                return True, "identical_circles"
+
+        # 检测 2：所有形状元素完全相同（任意标签）
+        if len(all_shape_sigs) >= 3:
+            unique_sigs = set(all_shape_sigs)
+            if len(unique_sigs) == 1:
+                return True, "identical_elements"
+
+        return False, None
+
 
 def compute_reward(svg_text, prompt=None):
     """对一个生成的 SVG 打分，返回总分与各维度细分。
 
-    评分采用加权求和。权重分配思路：
+    评分采用加权求和。权重分配思路（优化后）：
     - 结构合法性（well_formed + attrs + viewbox）合计 3.5，最高，因为
       解析失败的 SVG 一切免谈；
     - 几何合理性（coord_hard + coord_soft）合计 2.0；
     - 安全性（forbidden_tags + external_refs）合计 2.0；
-    - 内容丰富度（palette + density + non_degenerate）合计 3.0；
-    - 提示词保真度（fidelity）1.5，权重适中——270M 语言理解有限，
+    - 内容丰富度（palette + density + non_degenerate）合计 3.5，其中
+      non_degenerate 权重恢复为 1.5——退化是能力缺失的根本信号，不应轻罚；
+    - 反模板化（anti_template）1.0，新增——惩罚「单色居中重复圆」安全模板，
+      对抗 Goodhart 效应；
+    - 提示词保真度（fidelity）1.0，权重适中——270M 语言理解有限，
       过高会引入噪声。
     """
     dims = {}
@@ -433,14 +476,24 @@ def compute_reward(svg_text, prompt=None):
         score += dims["density"]
     wsum += 1.0
 
-    # 维度 10：非退化（非空、非单色）
+    # 维度 10：非退化（非空、非单色）——权重恢复为 1.5
     degenerate, reason = LogoGrader._is_degenerate(root)
     if not degenerate:
         dims["non_degenerate"] = 1.0
-        score += 1.0
+        score += 1.5
     else:
         dims["non_degenerate"] = 0.0
         dims["degenerate_reason"] = reason
+    wsum += 1.5
+
+    # 维度 12：反模板化（新增）——惩罚「单色居中重复圆」安全模板
+    is_template, template_reason = LogoGrader._is_template_like(root)
+    if not is_template:
+        dims["anti_template"] = 1.0
+        score += 1.0
+    else:
+        dims["anti_template"] = 0.0
+        dims["template_reason"] = template_reason
     wsum += 1.0
 
     # 维度 11：提示词保真度（颜色 + 形状）
