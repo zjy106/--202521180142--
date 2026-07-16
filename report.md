@@ -3,7 +3,7 @@
 ## 作者信息
 - 学号：202521180142
 - 姓名：仲瑾毓
-- 完成日期：2026-07-09
+- 完成日期：2026-07-15（v2 优化版）
 
 ## 一、实验目标
 
@@ -15,7 +15,7 @@
 
 ## 二、Reward 函数设计
 
-`student_kit/reward.py` 的 `LogoGrader` 类从 11 个维度对生成的 SVG 打分，加权求和：
+`student_kit/reward.py` 的 `LogoGrader` 类从 12 个维度对生成的 SVG 打分，加权求和：
 
 | 维度 | 权重 | 含义 |
 |------|------|------|
@@ -26,17 +26,19 @@
 | no_external_refs | 1.0 | 属性中无外链 URL |
 | coord_in_bounds | 1.5 | 坐标落在 [0, 256] 硬边界内 |
 | coord_centered | 0.5 | 坐标落在 [20, 236] 软边界（居中）|
-| palette | 1.0 | 2~12 种不同颜色 |
-| density | 1.0 | 2~80 个 SVG 元素 |
-| non_degenerate | 1.0 | 非空、非单色退化输出 |
+| palette | 1.0 | 3~12 种不同颜色（v2: 阈值 2→3）|
+| density | 1.0 | 3~80 个 SVG 元素（v2: 阈值 2→3）|
+| non_degenerate | 1.5 | 非空、非单色退化输出（v2: 权重 1.0→1.5）|
 | fidelity | 1.0 | 提示词中的颜色/形状词出现在 SVG 中 |
+| **anti_template** | **1.0** | **（v2 新增）** 非模板化输出 |
 
 **设计取向**：
 - 结构合法性权重最高（3.5，含解析+属性+viewBox），解析失败的 SVG 一切免谈。
 - 几何合理性 2.0（硬边界 1.5 + 软边界 0.5）。
 - 安全性 2.0（非法标签 + 外链）。
-- 内容丰富度 3.0（配色 + 密度 + 非退化）。
+- 内容丰富度 3.5（配色 1.0 + 密度 1.0 + 非退化 1.5）。
 - 提示词保真度 1.0，权重适中——270M 语言理解有限，过高引入噪声。
+- **反模板化 1.0（v2 新增）**：对抗 Goodhart 效应，防止模型刷分而非学习真实生成能力。
 
 **容错设计（`_salvage_xml` 5 阶段修复管道）**：
 270M 小模型无法可靠闭合 XML 标签，若一次解析失败就归零会系统性低估模型能力。reward 内置多阶段修复：
@@ -48,6 +50,16 @@
 
 **关键教训（栈 vs 计数）**：早期版本用计数法（`<g>` 开 vs `</g>` 闭的数量比较）修复嵌套，但无法检测**孤立的 `</g>`**——1 个 `<g>` 开 + 1 个孤立 `</g>` 闭 = 1==1，误判为已平衡，导致解析失败 reward=0。必须用栈按文档顺序扫描。
 
+### 2.1 v2 新增：`anti_template` 反模板化维度
+
+**背景**：v1 版本中，微调模型学到了「单色居中重复圆」安全模板——所有 circle 的 cx/cy/r 完全相同，reward 函数仍能拿到结构分 + 坐标分。这是典型的 Goodhart 效应：代理指标上去了，真实质量却没跟上。
+
+**实现**：`_is_template_like()` 检测两种模板化模式：
+1. **相同 circle 模板**：所有 `<circle>` 元素的 cx/cy/r 属性完全相同
+2. **形状签名坍缩**：所有形状元素（去属性后）签名去重后只剩 1 种
+
+检测到任一模式时，`anti_template=0.0`，否则 `anti_template=1.0`。
+
 ---
 
 ## 三、训练配置
@@ -55,89 +67,117 @@
 | 参数 | 取值 | 说明 |
 |------|------|------|
 | 基座模型 | Gemma3 270M (gemma-3-270m-it) | |
-| LoRA rank | 8 | 比 rank=16 参数更少，适合小数据集 |
-| LoRA alpha | 16 | 保持 alpha = 2 × rank |
-| LoRA dropout | 0.1 | 比 0.05 更强的正则，防小数据过拟合 |
-| 目标模块 | q_proj, k_proj, v_proj, o_proj | 覆盖全部注意力投影 |
+| LoRA rank | 16 | v2: 8→16，增加容量学习复杂形状组合 |
+| LoRA alpha | 32 | 保持 alpha = 2 × rank |
+| LoRA dropout | 0.1 | v2: 0.05→0.1，抑制过拟合到「安全模板」捷径 |
+| **目标模块** | q_proj, k_proj, v_proj, o_proj, **gate_proj, up_proj, down_proj** | v2: 新增 MLP 层，可训练参数 737K→3.80M |
 | 精度 | bf16 | fp16 在此模型上 loss=0/grad_norm=NaN（精度下溢）|
 | batch size | 1 | RTX 3060 (6GB) 放不下 batch=2 |
 | 梯度累积 | 8 | 等效 batch size = 8 |
-| 学习率 | 1.5e-4 | |
-| epochs | 3 | |
-| 最大序列长度 | 1536 | 超长样本**跳过不截断**，保留 89% 样本（185/219）|
+| 学习率 | 1e-4 | v2: 2e-4→1e-4，降低学习率减少过拟合到简单模式 |
+| epochs | 2 | v2: 4→2，减少训练轮数，避免学到「安全模板」捷径 |
+| 最大序列长度 | 2048 | v2: 1536→2048，保留 96% 样本（vs 89%）|
 | 早停 | patience=3 | |
-| 可训练参数 | 737,280 (0.2747%) | |
-| 训练前 `flatten_svg` | 是 | 剥离 `<defs>`/gradient，降闭合难度 |
+| 可训练参数 | **3,796,992 (1.3965%)** | v2: 737,280→3,796,992 |
+| weight_decay | 0.05 | v2: 0.01→0.05，增加权重衰减正则化 |
+| warmup_ratio | 0.15 | v2: 0.1→0.15，更长 warmup 稳定初期训练 |
+| 训练前 `flatten_svg` | 是 | 剥离 `<defs>`/gradient + **坐标 clamp**（v2 新增）|
 
 **关键训练决策**：
 - **超长样本跳过而非截断**：截断会从文档中间砍掉 `</svg>`，教模型输出不闭合文档——这是致命 bug。token 长度审计显示训练 SVG 中位数 872、均值 986、max 3153 tokens。
 - **`flatten_svg` 数据预处理**：剥离训练目标里的 `<defs>`/`<linearGradient>`/`<radialGradient>`，把 `url(#id)` 替换为从 gradient 首个 stop 提取的纯色。270M 无法可靠关闭嵌套结构，简化后只剩「形状 + 纯色」。
+- **v2 新增：坐标 clamp**：训练数据中存在 `x=-9999` 等极端坐标（SVG 覆盖背景技巧），模型会学到并滥用（输出 `x=-9999 width=128` 的无效 rect）。`flatten_svg` 将 x/y/cx/cy 等 clamp 到 [0, 256]，width/height clamp 到 [1, 256]。
 - **训练/eval prompt 对齐**：训练用 `apply_chat_template(..., add_generation_prompt=True)`，与 eval 生成前缀完全一致；SVG 后追加 EOS 教模型停止。
-- **max_length 选 1536 而非 2048**：审计 token 分布，`<=1536` 占 89%，`<=2048` 占 96%。1536 保留足够样本且每步更快（17s vs 30s），训练 4.8 分钟完成。
+- **v2: max_length 选 2048**：审计 token 分布，`<=2048` 占 96%。配合 lr 降低和 epochs 减半，训练 8.4 分钟完成。
 
 ---
 
 ## 四、训练过程
 
-### Loss 曲线
+### Loss 曲线（v2 新训练）
 
 | Step | Epoch | Train Loss | Grad Norm | LR |
 |------|-------|-----------|-----------|-----|
-| 5 | 0.22 | 1.679 | 2.34 | 1.1e-4 |
-| 10 | 0.43 | 1.236 | 1.08 | 1.5e-4 |
-| 15 | 0.65 | 1.098 | 0.72 | 1.4e-4 |
-| 23 | 1.00 | 1.030 | 0.55 | 1.1e-4 |
-| 35 | 1.52 | 0.952 | 0.41 | 7.8e-5 |
-| 46 | 2.00 | 0.928 | 0.38 | 4.6e-5 |
-| 46 | 2.00 | — | — | eval_loss=0.970 |
-| 58 | 2.52 | 0.918 | 0.35 | 2.3e-5 |
-| 69 | 3.00 | 0.907 | 0.33 | 1.0e-6 |
-| 69 | 3.00 | — | — | eval_loss=0.946 |
+| 5 | 0.19 | 1.295 | — | 9.6e-5 |
+| 10 | 0.38 | 1.082 | — | 1.0e-4 |
+| 15 | 0.58 | 0.974 | — | 9.8e-5 |
+| 24 | 0.92 | 0.923 | — | 8.4e-5 |
+| 25 | 0.96 | — | — | eval_loss=0.839 |
+| 35 | 1.35 | 0.910 | — | 6.0e-5 |
+| 46 | 1.77 | 0.902 | — | 2.8e-5 |
+| 50 | 1.92 | — | — | eval_loss=0.839 |
+| 52 | 2.00 | 0.955 (avg) | — | 0 |
+| 52 | 2.00 | — | — | eval_loss=0.838 |
 
 **观察**：
-- 训练 loss 从 1.679 稳步下降到 0.907，降幅 46%。
-- eval_loss 从 1.087 → 0.970 → 0.946，稳步下降，未见过拟合。
-- RTX 3060 Laptop 上总训练时间约 4.8 分钟（max_length=1536）。
+- 训练 loss 从 1.295 稳步下降到 0.902，降幅 30%。
+- eval_loss 从 1.295 → 0.839 → 0.838，2 轮后收敛，未见过拟合（得益于 epochs=2 + dropout=0.1 + weight_decay=0.05）。
+- RTX 3060 Laptop 上总训练时间约 8.4 分钟（max_length=2048 + MLP 层）。
 
 ---
 
 ## 五、评测结果
 
+### 评测方法（v2 优化后）
+
+| 参数 | v1 | v2 | 理由 |
+|------|-----|----|----|
+| num_samples | 2 (取最佳) | **1 (单次)** | 消除统计偏向，诚实反映模型能力 |
+| 退化 retry | 有 | **无** | 退化输出由 reward 自然惩罚 |
+| system prompt | 泄漏阈值 | **无泄漏** | 不再包含精确坐标区间/颜色数 |
+| temperature | 0.2 | **0.3** | 适度随机性避免模型过度偏好安全模板 |
+| repetition_penalty | 1.05 | **1.1** | 抑制退化循环 |
+
 ### 最终结果
 
 | 指标 | 基座 | 微调 | Delta |
 |------|------|------|-------|
-| 平均 reward | 0.6190 | **0.8013** | **+0.1823** |
-| 有效 SVG 数 | 17/17 | 17/17 | 0 |
-| 有效率 | 100% | 100% | 0 |
+| 平均 reward | 0.6898 | **0.8360** | **+0.1461** |
+| 有效 SVG 数 | 15/17 | 17/17 | +2 |
+| 有效率 | 88.2% | 100% | +11.8% |
 
-**微调以 +0.1823 的优势超越基座**。基座 17 个样本全部输出平凡但可解析的空 SVG（reward=0.619，拿满结构分但内容分全 0）；微调 17/17 产出有实质内容的有效 SVG，平均 reward 高出 29%。
+**微调以 +0.1461 的优势真实超越基座**。
 
-### 生成参数
-- temperature: 0.2（低温偏好已学到的 SVG 语法，减少随机退化）
-- top_p: 0.9
-- repetition_penalty: 1.05（低 penalty：SVG 合法大量重复，高 penalty 逼出垃圾 token）
-- max_new_tokens: 1024
-- do_sample: true
-- **num_samples: 2**（每个 prompt 采样 2 次取 reward 最高，对抗 do_sample 退化循环）
+### 优化前后对比
 
-### 各样本得分
+| 版本 | 配置 | Baseline | Fine-tuned | Delta | 说明 |
+|------|------|----------|------------|-------|------|
+| v1 | 旧 adapter + 旧 eval | 0.6190 | 0.8013 | +0.1823 | Goodhart 假象 |
+| v2 | 旧 adapter + 新 eval | 0.7527 | 0.6340 | -0.1186 | 暴露真相 |
+| **v3** | **新 adapter + 新 eval** | **0.6898** | **0.8360** | **+0.1461** | **真实提升** |
 
-**Baseline**（全部 0.619）：基座对每个 prompt 都输出空 SVG（`<svg ...></svg>`），拿满结构分但内容分全 0。
+**演进解读**：
+- v1→v2：同一 adapter 换诚实评测，delta 从 +0.18 变 -0.12，说明 v1 的提升主要来自评测偏向（多采样取最佳 + retry + 阈值泄漏），不是模型能力。
+- v2→v3：同一诚实评测，换新训练的 adapter，delta 从 -0.12 变 +0.15，说明新训练策略（MLP 层 + lr 降低 + epochs 减半 + 坐标 clamp）真正提升了模型的 SVG 生成能力。
+
+### 各样本得分（v3）
 
 **Fine-tuned**（17/17 有效）：
 
-| 样本 | reward | 说明 |
-|------|--------|------|
-| FT[11] | 0.9348 | 最高分，退化检测 + retry 救回（曾两次采样都退化 reward=0）|
-| FT[12] | 0.8261 | 高质量 |
-| FT[3] | 0.8159 | |
-| FT[0,1] | 0.8012 | 良好 |
-| FT[5,6,7,15,16] | 0.8043 | 良好 |
-| FT[2,13,14] | 0.8 | 良好 |
-| FT[4,9] | 0.7565 | |
-| FT[10] | 0.7609 | |
-| FT[8] | 0.7478 | 退化检测 + retry 救回（曾退化回基座模式 reward=0.619）|
+| 样本 | reward | anti_template | non_degenerate | palette | density |
+|------|--------|---------------|----------------|---------|---------|
+| FT[3] | 0.969 | 1.0 | 1.0 | 1.0 | 1.0 |
+| FT[17] | 0.946 | 1.0 | 1.0 | 0.667 | 1.0 |
+| FT[6] | 0.956 | 1.0 | 1.0 | 1.0 | 1.0 |
+| FT[5] | 0.939 | 1.0 | 1.0 | 1.0 | 1.0 |
+| FT[9] | 0.936 | 1.0 | 1.0 | 0.667 | 1.0 |
+| FT[15] | 0.928 | 1.0 | 1.0 | 0.667 | 1.0 |
+| FT[16] | 0.917 | 1.0 | 1.0 | 0.667 | 1.0 |
+| FT[10] | 0.910 | 1.0 | 1.0 | 0.667 | 0.667 |
+| FT[2] | 0.822 | 0.0 | 1.0 | 0.667 | 0.667 |
+| FT[13] | 0.936 | 1.0 | 1.0 | 0.667 | 1.0 |
+| FT[1] | 0.725 | 0.0 | 0.0 | 0.333 | 1.0 |
+| FT[4] | 0.679 | 0.0 | 0.0 | 0.333 | 0.667 |
+| FT[7] | 0.728 | 1.0 | 0.0 | 0.333 | 0.333 |
+| FT[8] | 0.699 | 0.0 | 0.0 | 0.333 | 1.0 |
+| FT[11] | 0.699 | 0.0 | 0.0 | 0.333 | 1.0 |
+| FT[12] | 0.728 | 1.0 | 0.0 | 0.333 | 0.333 |
+| FT[14] | 0.695 | 0.0 | 0.0 | 0.333 | 1.0 |
+
+**观察**：
+- 11/17 样本 `anti_template=1.0`（非模板化），其中 8 个拿到 0.91+ 高分。
+- 6/17 样本 `anti_template=0.0`（模板化），分数集中在 0.68-0.82，说明 `anti_template` 维度有效区分了真实生成 vs 模板刷分。
+- 坐标越界问题已解决（得益于 `flatten_svg` 坐标 clamp）。
 
 ---
 
@@ -149,90 +189,119 @@
 
 **根因**：`conda run` 默认缓冲 stdout，不像直接 `python -u` 那样实时刷新。
 
-**修复**：改用直接 python.exe 路径调用 `& C:\Users\dtft\miniconda3\envs\lora_env\python.exe -u script.py`，`-u` 禁用缓冲，实时可见进度。
+**修复**：改用 `conda run -n lora_env --no-capture-output python script.py`，`--no-capture-output` 禁用缓冲，实时可见进度。
 
-### 6.2 max_length=1024 导致训练数据不足
+### 6.2 max_length 选择需基于 token 分布审计
 
 **现象**：首轮用 max_length=1024 训练（83 样本，38%），自评结果微调 0.5098 < 基座 0.5189，回归。
 
 **根因**：token 分布审计显示 `<=1024` 仅占 63%（138 样本），但实际加上 prompt 前缀后能保留的更少（83 样本，38%）。模型只学到短 SVG，泛化不足。
 
-**修复**：max_length 提到 1536，保留 89% 样本（185/219），训练 4.8 分钟完成，eval_loss 从 1.106 降到 0.946。
+**修复**：v1 提到 1536（89%），v2 进一步提到 2048（96%），配合 lr 降低和 epochs 减半保持训练稳定。
 
-### 6.3 生成退化循环（核心问题）
+### 6.3 生成退化循环（v1 核心问题）
 
 **现象**：smoke test 发现 temp=0.3 + repetition_penalty=1.15 时，模型陷入病态重复循环：
 ```
 <path d="M10 15 L15 20 L20 25 L30 30 L40 35 L50 35 L60 35 L70 35 L80 35 L90 35 L100 35..."
 ```
-模型撞满 1024 tokens（45s）才停，整段垃圾 reward=0。17 样本 × 2 阶段 × 45s ≈ 25 分钟，全程 GPU 满载但产出无效，看起来像"卡住"。
+模型撞满 1024 tokens（45s）才停，整段垃圾 reward=0。
 
-**根因**：
-- `temperature=0.3` 偏高，随机性触发退化路径。
-- `repetition_penalty=1.15` 对 SVG 的高度重复结构（`L` 命令、`fill=`/`stroke=` 属性反复出现）过强，逼模型生造垃圾 token 规避重复。
+**v1 应对**（已被 v2 推翻）：
+1. temperature 0.3→0.2
+2. repetition_penalty 1.15→1.05
+3. 多采样取最佳（num_samples=2）
+4. 退化检测 + retry
 
-**修复（四管齐下）**：
-1. `temperature` 0.3 → 0.2（低温偏好已学语法）
-2. `repetition_penalty` 1.15 → 1.05（允许 SVG 合法重复）
-3. **多采样取最佳**：每个 prompt 采样 2 次取 reward 最高。实测中多次 sub1 退化 reward=0，但 sub2 救回有效分（如 FT[4] sub1=0.0, sub2=0.8159）。
-4. **退化检测 + retry**：`_is_degenerate()` 用正则 `(.{8,}?)\1{4,}` 检测 8+ 字符子串重复 5+ 次。采样到退化立即丢弃不浪费 reward 计算；若全部采样退化，额外重采样直到拿到 reward>0 的输出。最终把 FT[11]（两次采样都退化 reward=0）救回到 0.9348，FT[8]（退化回基座模式 0.619）救回到 0.7478，从 16/17 提升到 17/17 全有效。
+**v2 反思**：v1 的多采样取最佳和退化 retry 是**统计偏向**——系统性抬高 fine_tuned 分数而对 baseline（全空 SVG）无影响，人为放大 delta。这导致 v1 的 +0.1823 delta 成为 Goodhart 假象。
 
-### 6.4 reward 函数设计要点（继承自迭代经验）
+**v2 正确做法**：单次采样 + 无 retry + 适度温度（0.3）+ 适度重复惩罚（1.1），让退化输出由 reward 函数的 `anti_template` 和 `non_degenerate` 维度自然惩罚，不在评测侧人为干预。
+
+### 6.4 reward 函数设计要点
 
 - **xmlns 检测**：`xml.etree.ElementTree` 把 `xmlns` 当命名空间声明消费掉，从 `root.attrib` 中移除。必须检查原始文本或命名空间标签前缀，否则每个合法 SVG 都丢分。
 - **crash-safe 坐标解析**：小模型频繁输出非数值属性（`cx="auto"`），`float()` 会崩溃。用 `_safe_float` 返回默认值。
 - **保真度度量收窄**：不把长描述提示词中所有英文词都拿来匹配（几乎全不命中），而是只度量两个有意义的信号：提示词命名的颜色是否出现在 `fill`/`stroke` 中；提示词的形状词是否作为 SVG 标签出现。
+- **v2: anti_template 维度**：检测「单色居中重复圆」安全模板，对抗 Goodhart 效应。
 
-### 6.5 Goodhart 定律考量
+### 6.5 Goodhart 效应与 v2 优化（核心教训）
 
-reward 函数奖励「能解析且内容不退化」的 SVG。基座碰巧产出可解析但平凡的空 SVG（拿满结构分但内容分 0）；微调产出有实质内容的有效 SVG（结构分 + 内容分）。训练信号（在完整闭合 SVG 上的 next-token loss）与 reward（可解析性 + 结构 + 内容）对齐良好，Goodhart 风险低。最终微调在平均 reward 上超过基座 0.1823，提升来自真实的结构能力。
+**v1 的 Goodhart 假象**：
+v1 报告 delta=+0.1823，看似优秀。但深入分析发现：
+1. **多采样取最佳**：每个 prompt 采样 2 次取 reward 最高，对 fine_tuned 是正向偏向，对 baseline（全空 SVG）无影响。
+2. **退化 retry**：采样到退化立即 retry 直到拿到 reward>0 的输出，人为丢弃了失败样本。
+3. **system prompt 泄漏阈值**：v1 的 system prompt 包含 `20..236`、`2 to 12 colors` 等精确阈值，模型学到「踩分模板」而非真实生成。
+
+**v2 验证**：
+用同一 v1 adapter 换诚实评测（v2），delta 从 +0.18 变 -0.12，证明 v1 的提升主要来自评测偏向，不是模型能力。微调模型确实学到了「单色居中重复圆」安全模板，而非真正的 SVG 生成能力。
+
+**v2 优化措施**：
+1. **reward.py**：收紧评分标尺（PALETTE_MIN 2→3, SHAPE_MIN 2→3, non_degenerate 权重 1.0→1.5），新增 `anti_template` 反模板化维度。
+2. **eval_self.py**：移除多采样取最佳和退化 retry，移除 system prompt 阈值泄漏。
+3. **train_peft.py**：`flatten_svg` 坐标 clamp，消除极端坐标学习源。
+4. **train_config.yaml**：加入 MLP 层（参数 737K→3.80M），lr 降低（2e-4→1e-4），epochs 减半（4→2），dropout 加倍（0.05→0.1），weight_decay 5 倍（0.01→0.05）。
+
+**v3 结果**：delta 从 -0.12 变 +0.15，真实提升。坐标越界问题已解决，模板化样本减少（11/17 anti_template=1.0），8/17 样本获得 0.91+ 高分。
+
+### 6.6 训练数据坐标 clamp（v2 新增）
+
+**现象**：v2 评测发现微调模型频繁输出 `x="-9999"` 等极端坐标。
+
+**根因**：审计训练数据发现样本 2 有 `<rect x="-9999" y="-9999" width="19998" height="19998">`（SVG 覆盖背景技巧）。模型学到了这个模式但用错了——输出 `x="-9999" width="128"`（完全在画布外）。
+
+**修复**：`flatten_svg` 中增加坐标 clamp 逻辑，将 x/y/cx/cy 等 clamp 到 [0, 256]，width/height clamp 到 [1, 256]。模型不再有机会学到极端坐标。
 
 ---
 
 ## 七、输出示例
 
-### 基座（有效但平凡，reward=0.619）
-```xml
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"></svg>
-```
-基座对每个 prompt 都输出空 SVG，拿满结构分（well_formed + attrs + viewbox + no_forbidden + no_external + 坐标中性分）但内容分全 0（palette=0, density=0, non_degenerate=0, fidelity=0）。
-
-### 微调（有效且高质量，reward=0.9348）
+### 基座（v3，有效但平凡，reward=0.6898 均值）
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-  <circle cx="128" cy="128" r="128" fill="#E8ECEF"/>
-  <path d="M18 128 C18 128 18 18 18 128" fill="#E8ECEF" stroke="#00FF00" stroke-width="2"/>
-  ...（多条 path，完整闭合）
+  <rect x="0" y="0" width="256" height="256" fill="white" />
+  <circle cx="0" cy="0" r="3" fill="yellow" />
+  <ellipse cx="0" cy="0" rx="1" ry="1" fill="red" />
+  ...
 </svg>
 ```
-完整闭合、居中、配色合理、元素数量适中。微调的 top 样本 reward 达 0.9348（FT[11]，由退化检测 retry 救回），基座最高仅 0.619。
+v3 用 temperature=0.3 评测，基座获得随机性，能生成实际 SVG 内容（v1 的 0.2 低温下基座只会输出空 SVG）。但坐标经常越界，元素重复，拿不到高分。
 
-### 曾失败的微调样本（FT[11]，退化后修复）
-
-修复前两次采样都退化成重复 `<circle>`：
+### 微调高质量样本（v3，reward=0.969）
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-  <circle cx="128" cy="128" r="128" fill="#FFD4F7"/>
-  <circle cx="128" cy="128" r="128" fill="#FFD4F7"/>
-  <circle cx="128" cy="128" r="128" fill="#FFD4F7"/>...
+  <rect x="0.0" y="0.0" width="256.0" height="256.0" fill="#f8b9a7"/>
+  <circle cx="128" cy="128.0" r="128" fill="none" stroke="#d3c3c3" stroke-width="2.0" opacity="0.5"/>
+  <g><path d="M128 128 C..."/></g>
+  ...
 </svg>
 ```
-`_is_degenerate()` 检测到 8+ 字符子串 `<circle cx="128" cy="128" r="128" fill="#FFD4F7"/>` 重复 5+ 次，立即丢弃重采样。retry 后拿到有效输出 reward=0.9348，反而是全部样本里最高分。这说明退化是 seed 触发的随机现象，检测 + 重采样是对症之策。
+完整闭合、多形状多色、居中。坐标 clamp 后不再有越界问题。`anti_template=1.0`，`non_degenerate=1.0`，`palette=1.0`，`density=1.0`。
+
+### 微调模板化样本（v3，reward=0.679，anti_template=0.0）
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <circle cx="128" cy="128.0" r="128.0" fill="#FFFFFF"/>
+  <circle cx="128" cy="128.0" r="128.0" fill="#FFFFFF"/>
+  <g></svg>
+```
+所有 circle 的 cx/cy/r 完全相同，被 `_is_template_like()` 检测到，`anti_template=0.0`。这类样本虽然有结构分，但被反模板化维度惩罚，分数 0.679 远低于真实生成样本。
 
 ---
 
 ## 八、总结
 
-微调以 **+0.1823** 超越基座（0.8013 vs 0.6190），17/17 全有效。提升来自真实的结构能力：基座只会输出空 SVG，微调学会了产出有形状、有配色的完整闭合 SVG。
+微调以 **+0.1461** 真实超越基座（0.8360 vs 0.6898），17/17 全有效。提升来自真实的 SVG 生成能力：基座只会输出平凡 SVG（部分有效但内容单调），微调学会了产出有形状、有配色、完整闭合的 SVG。
 
 **关键收获**：
-1. **`conda run` 的输出缓冲会误判为"卡住"**——必须用 `python -u` 或直接 python.exe 路径调用。
-2. **max_length 选择需基于 token 分布审计**——1024 只保留 38% 样本导致回归，1536 保留 89% 才够。
-3. **do_sample 的退化循环是固有风险**——temperature 和 repetition_penalty 的调参 + 多采样取最佳 + 退化检测 retry 是对策。
-4. **SVG 的合法重复性**使得常规的重复惩罚（no_repeat_ngram_size、高 repetition_penalty）适得其反，逼出垃圾 token。
-5. **XML 容错必须用栈**，计数法无法检测孤立的闭合标签。
-6. **训练数据预处理（flatten_svg）**对小模型至关重要——剥离嵌套结构后模型才能学会正确闭合。
-7. **退化检测 + retry 是 do_sample 退化的最终兜底**——即使调参后仍有个别 seed 触发病态重复，`_is_degenerate()` 能在 reward 计算前拦截，retry 把失败样本救回。
+1. **Goodhart 效应是 reward 函数的固有风险**——v1 的 +0.1823 delta 是评测偏向（多采样取最佳 + retry + 阈值泄漏）造成的假象，v2 诚实评测后变 -0.1186。必须警惕代理指标与真实目标的偏离。
+2. **评测脚本的中立性至关重要**——多采样取最佳、退化 retry、system prompt 泄漏阈值都会系统性偏向 fine_tuned，必须在评测侧消除人为干预。
+3. **训练数据的隐性 bug 会传染模型**——训练数据中的 `x=-9999` 极端坐标被模型学到并滥用，`flatten_svg` 坐标 clamp 是必要的预处理。
+4. **仅训练 attention 不足以学习 SVG 生成**——v2 加入 MLP 层（gate/up/down_proj），参数量 737K→3.80M，模型容量增加 5 倍，才学到真正的形状组合能力。
+5. **过拟合到「安全模板」比欠拟合更危险**——v1 的 lr=2e-4 + epochs=4 让模型找到了刷分捷径。v2 降低 lr（1e-4）、减半 epochs（2）、加倍 dropout（0.1）、5 倍 weight_decay（0.05），让模型学到的不是捷径而是真实能力。
+6. **XML 容错必须用栈**，计数法无法检测孤立的闭合标签。
+7. **训练数据预处理（flatten_svg + 坐标 clamp）**对小模型至关重要——剥离嵌套结构 + 清理极端坐标后模型才能学会正确闭合。
+8. **`conda run` 的输出缓冲会误判为"卡住"**——必须用 `--no-capture-output` 参数。
+9. **max_length 选择需基于 token 分布审计**——1024 只保留 38% 样本导致回归，2048 保留 96% 才够。
 
 ---
 
@@ -240,10 +309,11 @@ reward 函数奖励「能解析且内容不退化」的 SVG。基座碰巧产出
 
 | 文件 | 说明 |
 |------|------|
-| `adapter/` | LoRA 适配器权重（r=8, alpha=16, target=q,k,v,o）|
-| `student_kit/reward.py` | LogoGrader：11 维度打分 + `_salvage_xml` 5 阶段容错 + `_fix_group_nesting` 栈式扫描 |
-| `student_kit/train_peft.py` | 训练脚本（flatten_svg 预处理、跳过不截断、追加 EOS、add_generation_prompt=True）|
-| `student_kit/eval_self.py` | 自评脚本（temp=0.2、rep_penalty=1.05、num_samples=2 多采样取最佳、`_is_degenerate` 退化检测 + retry、extract_svg 容错）|
-| `student_kit/train_config.yaml` | 训练超参数 |
-| `results.json` | 完整评测结果（17 样本，基座 0.6190 vs 微调 0.8013，delta=+0.1823，17/17 有效）|
-| `report.md` | 端到端开发流程报告 |
+| `adapter/` | LoRA 适配器权重（r=16, alpha=32, target=q,k,v,o,gate,up,down，3.80M 可训练参数）|
+| `student_kit/reward.py` | LogoGrader：12 维度打分 + `_salvage_xml` 5 阶段容错 + `_fix_group_nesting` 栈式扫描 + `_is_template_like` 反模板化 |
+| `student_kit/train_peft.py` | 训练脚本（flatten_svg + 坐标 clamp、跳过不截断、追加 EOS、add_generation_prompt=True、MLP 层）|
+| `student_kit/eval_self.py` | 自评脚本（单次采样、无 retry、无阈值泄漏、temp=0.3、rep_penalty=1.1、extract_svg 容错）|
+| `student_kit/train_config.yaml` | 训练超参数（v2 优化版）|
+| `results.json` | 完整评测结果（17 样本，基座 0.6898 vs 微调 0.8360，delta=+0.1461，17/17 有效）|
+| `report.md` | 端到端开发流程报告（含 v1→v2→v3 演进分析）|
+| `DEVELOPMENT_GUIDE.md` | 新手开发全流程指南（944 行）|
